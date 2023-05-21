@@ -11,7 +11,7 @@ const getSermons = async () => {
     });
 
     let fetchSermons = true;
-    let counter = 118;
+    let counter = 1;
     const allSermons = [];
     const page = await browser.newPage();
 
@@ -34,22 +34,27 @@ const getSermons = async () => {
 
         // Convert the quoteList to an iterable array
         // For each quote fetch the text and author
-        const hasNext = sermons.length > 0;
+        // const hasNext = sermons.length > 0;
+        const hasNext = false;
         const data = Array
             .from(sermons)
             .map((node) => {
+              const userAgent = navigator.userAgent;
                 const sermon = node.querySelector('.sermon-item-info a');
                 const link = sermon.getAttribute('href');
                 const title = sermon.innerText;
                 const metadata = node.querySelector('.sermon-item-metadata');
                 const speaker = metadata.querySelector('div:nth-of-type(1) a.accent-link')?.innerText || null;
                 const date = metadata.querySelector('div:nth-of-type(2)')?.innerText || null;
-                const scripture = metadata.querySelector('div:nth-of-type(3) a')?.innerText || null;
+                const hasScripture = Array.from(metadata.children).length === 3
+                const scripture = node.querySelector('.sermon-item-metadata div:nth-of-type(3)')?.innerText || null;
                 const series = node.querySelector('.sermon-item-series a.accent-link')?.innerText || null;
                 return {
+                    userAgent,
                     link: `https://www.sermonaudio.com/${link}`,
                     title,
                     speaker,
+                    hasScripture,
                     date,
                     scripture,
                     series,
