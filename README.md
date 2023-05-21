@@ -1,0 +1,1 @@
+[Great tutorial on this](https://www.freecodecamp.org/news/web-scraping-in-javascript-with-puppeteer/)
